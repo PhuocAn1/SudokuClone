@@ -13,6 +13,7 @@ public:
 	SDL_Renderer *gRenderer;
 	SDL_Event e;
 	TTF_Font *gFont;
+	std::string textBuffer;
 
 	Game();
 	~Game();
@@ -28,9 +29,12 @@ private:
 
 	const int SCREEN_WIDTH = 640;
 	const int SCREEN_HEIGHT = 451;
+	const int textInputWidth = 300;
+	const int textInputHeight = 30;
 	bool quit = false, main_menu = true, gameRunning = false, 
-		difficultyMenu = false;
+		difficultyMenu = false, saveMenu = false;
 
+	SDL_Rect textInputRect;
 	SudokuBoard sudokuBoard;
 	Button startButton, easyButton, mediumButton, hardButton, backButton, continueButton, saveButton, loadButton, solutionButton;
 	Button checkBoardButton;

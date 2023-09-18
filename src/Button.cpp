@@ -66,3 +66,8 @@ void Button::setClickAble(bool clickAble) {
 bool Button::getClickAble() {
 	return clickAble;
 }
+
+void Button::setButtonPostion(int x, int y) {
+	button.x = x;
+	button.y = y;
+}

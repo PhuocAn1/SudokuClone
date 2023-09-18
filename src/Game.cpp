@@ -4,6 +4,8 @@ Game::Game() {
 	gWindow = NULL;
 	gRenderer = NULL;
 	gFont = NULL;
+	textInputRect = { SCREEN_WIDTH / 2 - textInputWidth / 2, SCREEN_HEIGHT / 2 - textInputHeight / 2, 
+			textInputWidth, textInputHeight };
 }
 
 Game::~Game() {
@@ -148,7 +150,8 @@ void Game::processEvents() {
 				}
 				else {
 					if (saveButton.isClicked(x, y)) {
-						printf("Save button clicked\n");
+						saveMenu = true;
+						gameRunning = false;
 					}
 
 					if (loadButton.isClicked(x, y)) {
@@ -205,6 +208,27 @@ void Game::processEvents() {
 					break;
 				default:
 					break;
+				}
+			}
+		}
+	}
+
+	//Process events for save menu
+	if (saveMenu == true) {
+		while (SDL_PollEvent(&e) > 0) {
+			if (e.type == SDL_QUIT) {
+				quit = true;
+			}
+			else if (e.type == SDL_MOUSEBUTTONDOWN) {
+				int x, y;
+				SDL_GetMouseState(&x, &y);
+				if (saveButton.isClicked(x, y)) {
+					saveMenu = false;
+					gameRunning = true;
+				}
+				else if (backButton.isClicked(x, y)) {
+					saveMenu = false;
+					gameRunning = true;
 				}
 			}
 		}
@@ -270,17 +294,28 @@ void Game::update() {
 
 }
 
+//Note: Before rendering button make sure to set its position back to the original position
 void Game::render() {
 	//Clear screen
 	SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 	SDL_RenderClear(gRenderer);
 
 	if (main_menu == true) {
+		//Reset button positions
+		startButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 25);
+		continueButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 100);
+
 		startButton.renderButton(gRenderer);
 		continueButton.renderButton(gRenderer);
 	}
 
 	if (difficultyMenu == true) {
+		//Reset button positions
+		easyButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 - 125);
+		mediumButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 - 50);
+		hardButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 + 25);
+		backButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 + 100);
+
 		easyButton.renderButton(gRenderer);
 		mediumButton.renderButton(gRenderer);
 		hardButton.renderButton(gRenderer);
@@ -288,6 +323,12 @@ void Game::render() {
 	}
 
 	if (gameRunning == true) {
+		//Reset button positions
+		saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
+		loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
+		checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
+
+
 		//Draw board
 		sudokuBoard.renderBoard(gRenderer);
 
@@ -299,6 +340,12 @@ void Game::render() {
 
 		//Draw check button
 		checkBoardButton.renderButton(gRenderer);
+	}
+
+	if (saveMenu == true) {
+		//Draw the  text box
+		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+		SDL_RenderDrawRect(gRenderer, &textInputRect);
 	}
 	
 	//Update screen
