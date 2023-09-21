@@ -14,6 +14,7 @@ public:
 	void setButton(int x, int y, int w, int h, SDL_Color color, std::string displayText, SDL_Renderer* gRenderer, int fontSize);
 	bool isClicked(int x, int y);
 	void setButtonPostion(int x, int y);
+	void setButtonSize(int w, int h);
 	void setClickAble(bool clickAble);
 	bool getClickAble();
 

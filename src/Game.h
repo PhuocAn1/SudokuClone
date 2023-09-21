@@ -13,7 +13,7 @@ public:
 	SDL_Renderer *gRenderer;
 	SDL_Event e;
 	TTF_Font *gFont;
-	std::string textBuffer;
+	std::string gTextInputBuffer;
 
 	Game();
 	~Game();
@@ -21,6 +21,7 @@ public:
 	bool init();
 	void close();
 	void makeButton();
+	void renderTextInput();
 
 private:
 	void processEvents();
@@ -34,7 +35,7 @@ private:
 	bool quit = false, main_menu = true, gameRunning = false, 
 		difficultyMenu = false, saveMenu = false;
 
-	SDL_Rect textInputRect;
+	SDL_Rect textInputRect, textRect;
 	SudokuBoard sudokuBoard;
 	Button startButton, easyButton, mediumButton, hardButton, backButton, continueButton, saveButton, loadButton, solutionButton;
 	Button checkBoardButton;

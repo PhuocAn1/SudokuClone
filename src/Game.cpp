@@ -4,8 +4,11 @@ Game::Game() {
 	gWindow = NULL;
 	gRenderer = NULL;
 	gFont = NULL;
+
 	textInputRect = { SCREEN_WIDTH / 2 - textInputWidth / 2, SCREEN_HEIGHT / 2 - textInputHeight / 2, 
 			textInputWidth, textInputHeight };
+
+	textRect = { SCREEN_WIDTH / 2 - textInputWidth / 2, SCREEN_HEIGHT / 2 - textInputHeight / 2, 0, 0};
 }
 
 Game::~Game() {
@@ -88,12 +91,34 @@ void Game::processEvents() {
 				if (startButton.isClicked(x, y)) {
 					main_menu = false;
 					difficultyMenu = true;
+
+					//Reset button positions
+					easyButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 - 125);
+					mediumButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 - 50);
+					hardButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 + 25);
+					backButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 + 100);
+
+					//Reset button sizes
+					easyButton.setButtonSize(100, 50);
+					mediumButton.setButtonSize(100, 50);
+					hardButton.setButtonSize(100, 50);
+					backButton.setButtonSize(100, 50);
 				}
 
 				if (continueButton.getClickAble() == true) {
 					if (continueButton.isClicked(x, y)) {
 						main_menu = false;
 						gameRunning = true;
+
+						//Reset button positions
+						saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
+						loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
+						checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
+					
+						//Reset button sizes
+						saveButton.setButtonSize(100, 50);
+						loadButton.setButtonSize(100, 50);
+						checkBoardButton.setButtonSize(100, 50);
 					}
 				}
 			}
@@ -112,24 +137,79 @@ void Game::processEvents() {
 				if (easyButton.isClicked(x, y)) {
 					difficultyMenu = false;
 					gameRunning = true;
+
+					//Reset button positions
+					saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
+					loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
+					checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
+
+					//Reset button sizes
+					saveButton.setButtonSize(100, 50);
+					loadButton.setButtonSize(100, 50);
+					checkBoardButton.setButtonSize(100, 50);
+
 					sudokuBoard.levelsManager.setDifficulty(0);
 					sudokuBoard.loadLevel();
 				}
 				else if (mediumButton.isClicked(x, y)) {
 					difficultyMenu = false;
 					gameRunning = true;
+
+					//Reset button positions
+					saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
+					loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
+					checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
+
+					//Reset button sizes
+					saveButton.setButtonSize(100, 50);
+					loadButton.setButtonSize(100, 50);
+					checkBoardButton.setButtonSize(100, 50);
+
 					sudokuBoard.levelsManager.setDifficulty(1);
 					sudokuBoard.loadLevel();
 				}
 				else if (hardButton.isClicked(x, y)) {
 					difficultyMenu = false;
 					gameRunning = true;
+
+					//Reset button positions
+					saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
+					loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
+					checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
+
+					//Reset button sizes
+					saveButton.setButtonSize(100, 50);
+					loadButton.setButtonSize(100, 50);
+					checkBoardButton.setButtonSize(100, 50);
+
 					sudokuBoard.levelsManager.setDifficulty(2);
 					sudokuBoard.loadLevel();
 				}
 				else if (backButton.isClicked(x, y)) {
 					difficultyMenu = false;
 					main_menu = true;
+
+					//Reset button positions
+					startButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 25);
+					continueButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 100);
+
+					//Reset button sizes
+					startButton.setButtonSize(150, 50);
+					continueButton.setButtonSize(150, 50);
+				}
+			}
+			else if (e.type == SDL_KEYDOWN) {
+				if (e.key.keysym.sym == SDLK_ESCAPE) {
+					difficultyMenu = false;
+					main_menu = true;
+
+					//Reset button positions
+					startButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 25);
+					continueButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 100);
+
+					//Reset button sizes
+					startButton.setButtonSize(150, 50);
+					continueButton.setButtonSize(150, 50);
 				}
 			}
 		}
@@ -152,6 +232,15 @@ void Game::processEvents() {
 					if (saveButton.isClicked(x, y)) {
 						saveMenu = true;
 						gameRunning = false;
+						
+						//Reset button positions
+						saveButton.setButtonPostion(SCREEN_WIDTH / 2 - textInputWidth / 2 + 40, SCREEN_HEIGHT / 2 - textInputHeight / 2 + 50);
+						backButton.setButtonPostion(SCREEN_WIDTH / 2 - textInputWidth / 2 + 160, SCREEN_HEIGHT / 2 - textInputHeight / 2 + 50);
+
+						//Reset button sizes
+						saveButton.setButtonSize(100, 50);
+						backButton.setButtonSize(100, 50);
+
 					}
 
 					if (loadButton.isClicked(x, y)) {
@@ -204,6 +293,14 @@ void Game::processEvents() {
 				case SDLK_ESCAPE:
 					gameRunning = false;
 					main_menu = true;
+					//Reset button positions
+					startButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 25);
+					continueButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 100);
+
+					//Reset button sizes
+					startButton.setButtonSize(150, 50);
+					continueButton.setButtonSize(150, 50);
+
 					continueButton.setClickAble(true);
 					break;
 				default:
@@ -215,23 +312,64 @@ void Game::processEvents() {
 
 	//Process events for save menu
 	if (saveMenu == true) {
+		SDL_StartTextInput();
 		while (SDL_PollEvent(&e) > 0) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
+			}
+			else if (e.type == SDL_TEXTINPUT) { //Get text input, must be done before SDL_KEYDOWN ???
+				gTextInputBuffer += e.text.text;
 			}
 			else if (e.type == SDL_MOUSEBUTTONDOWN) {
 				int x, y;
 				SDL_GetMouseState(&x, &y);
 				if (saveButton.isClicked(x, y)) {
-					saveMenu = false;
-					gameRunning = true;
+					printf("Do save file stuff\n");
+					sudokuBoard.saveLevel(gTextInputBuffer);
 				}
 				else if (backButton.isClicked(x, y)) {
 					saveMenu = false;
 					gameRunning = true;
+
+					//Reset button positions
+					saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
+					loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
+					checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
+				
+					//Reset button sizes
+					saveButton.setButtonSize(100, 50);
+					loadButton.setButtonSize(100, 50);
+					checkBoardButton.setButtonSize(100, 50);
+
+					//Reset text input
+					gTextInputBuffer = "";
+				}
+			}
+			else if (e.type = SDL_KEYDOWN) {
+				if (e.key.keysym.sym == SDLK_ESCAPE) {
+					saveMenu = false;
+					gameRunning = true;
+
+					//Reset button positions
+					saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
+					loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
+					checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
+				
+					//Reset button sizes
+					saveButton.setButtonSize(100, 50);
+					loadButton.setButtonSize(100, 50);
+					checkBoardButton.setButtonSize(100, 50);
+
+					//Reset text input
+					gTextInputBuffer = "";
+				}
+
+				if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputBuffer.length() > 0) {
+					gTextInputBuffer.pop_back(); //Delete a character from the string
 				}
 			}
 		}
+		SDL_StopTextInput();
 	}
 }
 
@@ -294,6 +432,34 @@ void Game::update() {
 
 }
 
+void Game::renderTextInput() {
+	SDL_Color textColor = { 0, 0, 0, 0 };
+	SDL_Surface *textSurface = TTF_RenderText_Blended(gFont, gTextInputBuffer.c_str(), textColor);
+
+	if (textSurface == NULL) {
+		printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+		return;
+	}
+
+	SDL_Texture *textTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
+
+	if (textTexture == NULL) {
+		printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+		return;
+	}
+
+	//Font size 24 has height of 27
+
+	textRect.w = textSurface->w;
+	textRect.h = textSurface->h;
+
+	SDL_RenderCopy(gRenderer, textTexture, NULL, &textRect);
+
+	//Destroy old surface and texture
+	SDL_FreeSurface(textSurface);
+	SDL_DestroyTexture(textTexture);
+}
+
 //Note: Before rendering button make sure to set its position back to the original position
 void Game::render() {
 	//Clear screen
@@ -301,21 +467,11 @@ void Game::render() {
 	SDL_RenderClear(gRenderer);
 
 	if (main_menu == true) {
-		//Reset button positions
-		startButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 25);
-		continueButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 100);
-
 		startButton.renderButton(gRenderer);
 		continueButton.renderButton(gRenderer);
 	}
 
 	if (difficultyMenu == true) {
-		//Reset button positions
-		easyButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 - 125);
-		mediumButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 - 50);
-		hardButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 + 25);
-		backButton.setButtonPostion(SCREEN_WIDTH / 2 - 100 / 2, SCREEN_HEIGHT / 2 + 100);
-
 		easyButton.renderButton(gRenderer);
 		mediumButton.renderButton(gRenderer);
 		hardButton.renderButton(gRenderer);
@@ -323,12 +479,6 @@ void Game::render() {
 	}
 
 	if (gameRunning == true) {
-		//Reset button positions
-		saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
-		loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
-		checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
-
-
 		//Draw board
 		sudokuBoard.renderBoard(gRenderer);
 
@@ -343,9 +493,17 @@ void Game::render() {
 	}
 
 	if (saveMenu == true) {
+		//Render the text
+		if (gTextInputBuffer.size() != 0) {
+			renderTextInput();
+		}
 		//Draw the  text box
 		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 		SDL_RenderDrawRect(gRenderer, &textInputRect);
+
+		//Render the button
+		saveButton.renderButton(gRenderer);
+		backButton.renderButton(gRenderer);
 	}
 	
 	//Update screen

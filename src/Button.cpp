@@ -71,3 +71,8 @@ void Button::setButtonPostion(int x, int y) {
 	button.x = x;
 	button.y = y;
 }
+
+void Button::setButtonSize(int w, int h) {
+	button.w = w;
+	button.h = h;
+}
