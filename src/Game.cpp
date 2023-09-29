@@ -9,6 +9,10 @@ Game::Game() {
 			textInputWidth, textInputHeight };
 
 	textRect = { SCREEN_WIDTH / 2 - textInputWidth / 2, SCREEN_HEIGHT / 2 - textInputHeight / 2, 0, 0};
+
+	for (int i = 0; i < 5; i++) {
+		displayFileName[i] = { SCREEN_WIDTH / 2 - textInputWidth / 2, 100 + 30 * i, textInputWidth, textInputHeight };
+	}
 }
 
 Game::~Game() {
@@ -121,6 +125,35 @@ void Game::processEvents() {
 						checkBoardButton.setButtonSize(100, 50);
 					}
 				}
+
+				if (loadButton.isClicked(x, y)) {
+					loadMenu = true;
+					main_menu = false;
+					fromMainMenu = true;
+
+					fileNames = sudokuBoard.levelsManager.getFileName();
+
+					warpHead = 0;
+
+					if (fileNames.size() > 5) {
+						warpTail = 5;
+					}
+					else {
+						warpTail = fileNames.size();
+					}
+
+					for (int i = 0; i < fileNames.size(); i++) {
+						printf("%s\n", fileNames[i].c_str());
+					}
+
+					//Set button positions
+					loadButton.setButtonPostion(SCREEN_WIDTH / 2 - 225 / 2, SCREEN_HEIGHT / 2 - 50 / 2 + 100);
+					backButton.setButtonPostion(SCREEN_WIDTH / 2 - 225 / 2 + 125, SCREEN_HEIGHT / 2 - 50 / 2 + 100);
+
+					//Set button sizes
+					loadButton.setButtonSize(100, 50);
+					backButton.setButtonSize(100, 50);
+				}
 			}
 		}
 	}
@@ -137,6 +170,8 @@ void Game::processEvents() {
 				if (easyButton.isClicked(x, y)) {
 					difficultyMenu = false;
 					gameRunning = true;
+
+					continueButton.setClickAble(true);
 
 					//Reset button positions
 					saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
@@ -155,6 +190,8 @@ void Game::processEvents() {
 					difficultyMenu = false;
 					gameRunning = true;
 
+					continueButton.setClickAble(true);
+
 					//Reset button positions
 					saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
 					loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
@@ -171,6 +208,8 @@ void Game::processEvents() {
 				else if (hardButton.isClicked(x, y)) {
 					difficultyMenu = false;
 					gameRunning = true;
+
+					continueButton.setClickAble(true);
 
 					//Reset button positions
 					saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
@@ -192,10 +231,12 @@ void Game::processEvents() {
 					//Reset button positions
 					startButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 25);
 					continueButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 100);
+					loadButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 + 50);
 
 					//Reset button sizes
 					startButton.setButtonSize(150, 50);
 					continueButton.setButtonSize(150, 50);
+					loadButton.setButtonSize(150, 50);
 				}
 			}
 			else if (e.type == SDL_KEYDOWN) {
@@ -206,11 +247,13 @@ void Game::processEvents() {
 					//Reset button positions
 					startButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 25);
 					continueButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 100);
+					loadButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 + 50);
 
 					//Reset button sizes
 					startButton.setButtonSize(150, 50);
 					continueButton.setButtonSize(150, 50);
-				}
+					loadButton.setButtonSize(150, 50);
+				} 
 			}
 		}
 	}
@@ -241,10 +284,31 @@ void Game::processEvents() {
 						saveButton.setButtonSize(100, 50);
 						backButton.setButtonSize(100, 50);
 
+						SDL_StartTextInput();
 					}
 
 					if (loadButton.isClicked(x, y)) {
-						printf("Load button clicked\n");
+						fileNames = sudokuBoard.levelsManager.getFileName();
+
+						warpHead = 0;
+
+						if (fileNames.size() > 5) {
+							warpTail = 5;
+						}
+						else {
+							warpTail = fileNames.size();
+						}
+
+						for (int i = 0; i < fileNames.size(); i++) {
+							printf("%s\n", fileNames[i].c_str());
+						}
+
+						loadMenu = true;
+						gameRunning = false;
+
+						//Set button positions
+						loadButton.setButtonPostion(SCREEN_WIDTH / 2 - 225 / 2, SCREEN_HEIGHT / 2 - 50 / 2 + 100);
+						backButton.setButtonPostion(SCREEN_WIDTH / 2 - 225 / 2 + 125, SCREEN_HEIGHT / 2 - 50 / 2 + 100);
 					}
 
 					if (checkBoardButton.isClicked(x, y)) {
@@ -296,10 +360,12 @@ void Game::processEvents() {
 					//Reset button positions
 					startButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 25);
 					continueButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 100);
+					loadButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 + 50);
 
 					//Reset button sizes
 					startButton.setButtonSize(150, 50);
 					continueButton.setButtonSize(150, 50);
+					loadButton.setButtonSize(150, 50);
 
 					continueButton.setClickAble(true);
 					break;
@@ -312,13 +378,36 @@ void Game::processEvents() {
 
 	//Process events for save menu
 	if (saveMenu == true) {
-		SDL_StartTextInput();
-		while (SDL_PollEvent(&e) > 0) {
+		while (SDL_PollEvent(&e) != 0) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
 			}
 			else if (e.type == SDL_TEXTINPUT) { //Get text input, must be done before SDL_KEYDOWN ???
 				gTextInputBuffer += e.text.text;
+			}
+			else if (e.type == SDL_KEYDOWN) {
+				if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputBuffer.length() > 0) {
+					gTextInputBuffer.pop_back(); //Delete a character from the string
+				}
+				else if (e.key.keysym.sym == SDLK_ESCAPE) {
+					saveMenu = false;
+					gameRunning = true;
+
+					//Reset button positions
+					saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
+					loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
+					checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
+
+					//Reset button sizes
+					saveButton.setButtonSize(100, 50);
+					loadButton.setButtonSize(100, 50);
+					checkBoardButton.setButtonSize(100, 50);
+
+					//Reset text input
+					gTextInputBuffer = "";
+
+					SDL_StopTextInput();
+				}
 			}
 			else if (e.type == SDL_MOUSEBUTTONDOWN) {
 				int x, y;
@@ -343,33 +432,172 @@ void Game::processEvents() {
 
 					//Reset text input
 					gTextInputBuffer = "";
+
+					SDL_StopTextInput();
+				}
+			}	
+		}	
+	}
+
+	//Process event for the load menu
+	if (loadMenu == true) {
+		while (SDL_PollEvent(&e) > 0) {
+			if (e.type == SDL_QUIT) {
+				quit = true;
+			}
+			else if (e.type == SDL_MOUSEBUTTONDOWN) {
+				int x, y;
+				SDL_GetMouseState(&x, &y);
+				if (backButton.isClicked(x, y)) {
+					if (continueButton.getClickAble() == false || fromMainMenu == true) {
+						loadMenu = false;
+						main_menu = true;
+						fromMainMenu = false;
+
+						//Reset button positions
+						startButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 25);
+						continueButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 100);
+						loadButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 + 50);
+
+						//Reset button sizes
+						startButton.setButtonSize(150, 50);
+						continueButton.setButtonSize(150, 50);
+						loadButton.setButtonSize(150, 50);
+
+						//Reset head and tail
+						warpHead = 0;
+						warpTail = 0;
+
+						//Pop all content in the fileNames vector
+						sudokuBoard.levelsManager.depopulateFileName();
+					}
+					else { //Traffic comming from the gameRunning state
+						loadMenu = false;
+						gameRunning = true;
+
+						//Reset button positions
+						saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
+						loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
+						checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
+
+						//Reset button sizes
+						saveButton.setButtonSize(100, 50);
+						loadButton.setButtonSize(100, 50);
+						checkBoardButton.setButtonSize(100, 50);
+
+						//Reset head and tail
+						warpHead = 0;
+						warpTail = 0;
+
+						//Pop all content in the fileNames vector
+						sudokuBoard.levelsManager.depopulateFileName();
+					}
+				}
+				else if (loadButton.isClicked(x, y)) {
+					//Load the save file
+					if (gChosenFileName != "") {
+						sudokuBoard.levelsManager.loadUserSavedLevel(sudokuBoard.gCells, gChosenFileName);
+
+						loadMenu = false;
+						gameRunning = true;
+
+						//Reset button positions
+						saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
+						loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
+						checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
+					
+						//Reset button sizes
+						saveButton.setButtonSize(100, 50);
+						loadButton.setButtonSize(100, 50);
+						checkBoardButton.setButtonSize(100, 50);
+
+						//Reset head and tail
+						warpHead = 0;
+						warpTail = 0;
+
+						//Pop all content in the fileNames vector
+						sudokuBoard.levelsManager.depopulateFileName();
+					}					
+				}
+				else {
+					//Check mouse position to see if it is within any line of text
+					int counter = 0;
+					for (size_t i = warpHead; i < warpTail; i++) {
+						if ((x >= displayFileName[counter].x) && (x <= displayFileName[counter].x + displayFileName[counter].w)
+							&& (y >= displayFileName[counter].y) && (y <= displayFileName[counter].y + displayFileName[counter].h)) {
+							//Get the file name
+							gChosenFileName = fileNames[i];
+							std::cout << gChosenFileName << std::endl;
+							gChosenLine = i;
+						}
+						counter++;
+					}
 				}
 			}
-			else if (e.type = SDL_KEYDOWN) {
+			else if (e.type == SDL_KEYDOWN) {
 				if (e.key.keysym.sym == SDLK_ESCAPE) {
-					saveMenu = false;
-					gameRunning = true;
+					if (continueButton.getClickAble() == false || fromMainMenu == true) {
+						loadMenu = false;
+						main_menu = true;
+						fromMainMenu = false;
 
-					//Reset button positions
-					saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
-					loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
-					checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
-				
-					//Reset button sizes
-					saveButton.setButtonSize(100, 50);
-					loadButton.setButtonSize(100, 50);
-					checkBoardButton.setButtonSize(100, 50);
+						//Reset button positions
+						startButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 25);
+						continueButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 - 100);
+						loadButton.setButtonPostion(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 + 50);
 
-					//Reset text input
-					gTextInputBuffer = "";
+						//Reset button sizes
+						startButton.setButtonSize(150, 50);
+						continueButton.setButtonSize(150, 50);
+						loadButton.setButtonSize(150, 50);
+
+						//Reset head and tail
+						warpHead = 0;
+						warpTail = 0;
+
+						//Pop all content in the fileNames vector
+						sudokuBoard.levelsManager.depopulateFileName();
+					}
+					else {
+						loadMenu = false;
+						gameRunning = true;
+
+						//Reset button positions
+						saveButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 25);
+						loadButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100);
+						checkBoardButton.setButtonPostion(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175);
+
+						//Reset button sizes
+						saveButton.setButtonSize(100, 50);
+						loadButton.setButtonSize(100, 50);
+						checkBoardButton.setButtonSize(100, 50);
+
+						//Reset head and tail
+						warpHead = 0;
+						warpTail = 0;
+
+						//Pop all content in the fileNames vector
+						sudokuBoard.levelsManager.depopulateFileName();
+					}		
 				}
 
-				if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputBuffer.length() > 0) {
-					gTextInputBuffer.pop_back(); //Delete a character from the string
+				if (e.key.keysym.sym == SDLK_DOWN) {
+					//Scroll the file names down
+					if (warpHead < fileNames.size() - 5) {
+						warpHead++;
+						warpTail++;
+					}
+				}
+
+				if (e.key.keysym.sym == SDLK_UP) {
+					//Scroll the file names up
+					if (warpHead > 0) {
+						warpHead--;
+						warpTail--;
+					}
 				}
 			}
 		}
-		SDL_StopTextInput();
 	}
 }
 
@@ -398,8 +626,10 @@ void Game::makeButton() {
 			100, 50, buttonColor, "Save", gRenderer, 18);
 
 	//Make the load button
-	loadButton.setButton(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100,
-					100, 50, buttonColor, "Load", gRenderer, 18);
+	/*loadButton.setButton(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 100,
+					100, 50, buttonColor, "Load", gRenderer, 18);*/
+
+	loadButton.setButton(SCREEN_WIDTH / 2 - 150 / 2, SCREEN_HEIGHT / 2 + 50, 150, 50, buttonColor, "Load", gRenderer, 18);
 
 	//Make the check button
 	checkBoardButton.setButton(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175,
@@ -432,16 +662,57 @@ void Game::update() {
 
 }
 
+void Game::renderFileName() {
+	//To be implemented
+	SDL_Color textColor = { 0, 0, 0, 0 };
+	SDL_Rect renderQuad = { 0, 0, 0, 0 };
+	int counter = 0;
+	for (size_t i = warpHead; i < warpTail; i++) { //Issue regarding out of bound in vector
+		SDL_Surface *textSurface = TTF_RenderText_Blended(gFont, fileNames[i].c_str(), textColor);
+
+		if (textSurface == NULL) {
+			printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+			return;
+		}
+
+		SDL_Texture *textTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
+
+		if (textTexture == NULL) {
+			printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+			return;
+		}
+
+		//Font size 24 has height of 27
+		renderQuad.x = displayFileName[counter].x;
+		renderQuad.y = displayFileName[counter].y;
+		renderQuad.w = textSurface->w;
+		renderQuad.h = textSurface->h;
+
+		//Fill the background of the chosen text
+		if (i == gChosenLine) {
+			SDL_SetRenderDrawColor(gRenderer, 160, 160, 160, 1);
+			SDL_RenderFillRect(gRenderer, &displayFileName[counter]); // Issue here, need to fix 
+		}
+
+		SDL_RenderCopy(gRenderer, textTexture, NULL, &renderQuad);
+
+		//Destroy old surface and texture
+		SDL_FreeSurface(textSurface);
+		SDL_DestroyTexture(textTexture);
+		counter++;
+	}
+}
+
 void Game::renderTextInput() {
 	SDL_Color textColor = { 0, 0, 0, 0 };
-	SDL_Surface *textSurface = TTF_RenderText_Blended(gFont, gTextInputBuffer.c_str(), textColor);
+	SDL_Surface* textSurface = TTF_RenderText_Blended(gFont, gTextInputBuffer.c_str(), textColor);
 
 	if (textSurface == NULL) {
 		printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
 		return;
 	}
 
-	SDL_Texture *textTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
 
 	if (textTexture == NULL) {
 		printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
@@ -469,6 +740,7 @@ void Game::render() {
 	if (main_menu == true) {
 		startButton.renderButton(gRenderer);
 		continueButton.renderButton(gRenderer);
+		loadButton.renderButton(gRenderer);
 	}
 
 	if (difficultyMenu == true) {
@@ -505,6 +777,18 @@ void Game::render() {
 		saveButton.renderButton(gRenderer);
 		backButton.renderButton(gRenderer);
 	}
+
+	if (loadMenu == true) {
+		//Render the files name
+
+		if (fileNames.size() != 0) {
+			renderFileName();
+		}
+
+		//Render the button
+		loadButton.renderButton(gRenderer);
+		backButton.renderButton(gRenderer);
+	}
 	
 	//Update screen
 	SDL_RenderPresent(gRenderer);
@@ -518,7 +802,7 @@ void Game::run() {
 
 		render();
 
-		SDL_Delay(16);
+		SDL_Delay(1000 / 60);
 	}
 	//Free resources and close SDL
 	close();

@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <iostream>
+#include <vector>
 #include "SudokuBoard.h"
 #include "Button.h"
 
@@ -22,6 +23,7 @@ public:
 	void close();
 	void makeButton();
 	void renderTextInput();
+	void renderFileName();
 
 private:
 	void processEvents();
@@ -32,12 +34,18 @@ private:
 	const int SCREEN_HEIGHT = 451;
 	const int textInputWidth = 300;
 	const int textInputHeight = 30;
+	size_t gChosenLine = -1;
 	bool quit = false, main_menu = true, gameRunning = false, 
-		difficultyMenu = false, saveMenu = false;
+		difficultyMenu = false, saveMenu = false, loadMenu = false, fromMainMenu = false;
 
-	SDL_Rect textInputRect, textRect;
+	size_t warpHead = 0, warpTail = 0; //To display the file names in the load menu
+
+	SDL_Rect textInputRect, textRect, displayFileName[5];
 	SudokuBoard sudokuBoard;
 	Button startButton, easyButton, mediumButton, hardButton, backButton, continueButton, saveButton, loadButton, solutionButton;
 	Button checkBoardButton;
+
+	std::string gChosenFileName;
+	std::vector<std::string> fileNames;
 };
 

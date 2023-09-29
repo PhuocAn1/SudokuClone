@@ -3,7 +3,6 @@
 SudokuBoard::SudokuBoard() {
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
-			boardState[i][j] = 0;
 			gCells[i][j].setCellPosition(i * CELL_SIZE, j *CELL_SIZE);
 		}
 	}
@@ -109,18 +108,16 @@ int SudokuBoard::getCellSize() {
 }
 
 void SudokuBoard::loadLevel() {
-	levelsManager.loadLevel(boardState);
+	levelsManager.loadLevel(gCells);
 
 	for (int i = 0; i < 9; i++) {
 		for (int j=0; j<9; j++) {
-			if (boardState[i][j] != 0) {
+			if (gCells[i][j].getCellValue() != 0) {
 				gCells[i][j].setEditable(false);
-				gCells[i][j].setCellValue(boardState[i][j]);
 				gCells[i][j].setCellPosition(i * CELL_SIZE, j * CELL_SIZE);
 			}
 			else {
 				gCells[i][j].setEditable(true);
-				gCells[i][j].setCellValue(0);
 				gCells[i][j].setCellPosition(i * CELL_SIZE, j * CELL_SIZE);
 			}
 		}

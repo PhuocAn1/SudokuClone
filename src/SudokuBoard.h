@@ -22,7 +22,7 @@ public:
 	void setNumber(int number); // Set the value of the chosen cell 
 	bool checkBoard(); // Check if the board is correct
 
-	int boardState[9][9]; //Save the initial state of the board ???
+	//int boardState[9][9]; //Save the initial state of the board ???
 	SDL_Texture *numbers[9];
 	Cell gCells[9][9];
 	LevelsManager levelsManager;

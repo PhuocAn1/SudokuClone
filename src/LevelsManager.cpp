@@ -21,7 +21,7 @@ int LevelsManager::setRandomLevel() {
 	return randomLevel;
 }
 
-void LevelsManager::loadLevel(int sudokuBoard[9][9]) {
+void LevelsManager::loadLevel(Cell gCell[9][9]) {
 	int randomLevel = setRandomLevel();
 	if (difficultyLevel != -1) {
 
@@ -45,7 +45,7 @@ void LevelsManager::loadLevel(int sudokuBoard[9][9]) {
 				}
 				else {
 					int value = inChar - '0';
-					sudokuBoard[row][col] = value;
+					gCell[row][col].setCellValue(value);
 					col++;
 				}
 			}
@@ -93,4 +93,53 @@ void LevelsManager::saveLevel(Cell gCell[9][9], std::string gFileName) {
 	}
 
 	gSaveFile.close();
+}
+
+std::vector<std::string> LevelsManager::getFileName() {
+	std::string path = "saves";
+
+	for (const auto& entry : std::filesystem::directory_iterator(path)) {
+		//std::cout << entry.path().filename() << std::endl;
+		gFileName.push_back(entry.path().filename().string());
+	}
+
+	return gFileName;
+}
+
+void LevelsManager::depopulateFileName() {
+	gFileName.clear();
+}
+
+void LevelsManager::loadUserSavedLevel(Cell gCell[9][9], std::string gFileName) {
+	std::string path = "saves/" + gFileName;
+	std::ifstream LevelFile;
+
+	LevelFile.open(path, std::ios::in | std::ios::binary);
+
+	int row = 0, col = 0;
+
+	if (!LevelFile.is_open()) {
+		std::cout << "Error opening file" << std::endl;
+	}
+	else {
+		int value = 0;
+
+		while (LevelFile.read(reinterpret_cast<char*>(&value), sizeof(value))) {
+			if (col == 9) {
+				col = 0;
+				row++;
+			}
+			if (value < 0) {
+				gCell[row][col].setCellValue(-value);
+				gCell[row][col].setEditable(false);
+			}
+			else {
+				gCell[row][col].setCellValue(value);
+				gCell[row][col].setEditable(true);
+			}
+			col++;
+		}
+	}
+	std::cout << "Done loading level" << std::endl; //Debugging purposes
+	LevelFile.close();
 }
