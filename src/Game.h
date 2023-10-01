@@ -6,6 +6,7 @@
 #include <vector>
 #include "SudokuBoard.h"
 #include "Button.h"
+#include "PopUpWindow.h"
 
 class Game
 {
@@ -42,10 +43,12 @@ private:
 
 	SDL_Rect textInputRect, textRect, displayFileName[5];
 	SudokuBoard sudokuBoard;
-	Button startButton, easyButton, mediumButton, hardButton, backButton, continueButton, saveButton, loadButton, solutionButton;
-	Button checkBoardButton;
+	Button startButton, easyButton, mediumButton, hardButton, backButton, continueButton, saveButton, loadButton;
+	Button checkBoardButton, solveBoardButton;
 
 	std::string gChosenFileName;
 	std::vector<std::string> fileNames;
+
+	PopUpWindow gMessageWindow;
 };
 

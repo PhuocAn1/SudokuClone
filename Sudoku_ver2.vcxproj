@@ -139,19 +139,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\PopUpWindow.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\LevelsManager.cpp" />
     <ClCompile Include="src\Cell.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\SudokuBoard.cpp" />
+    <ClCompile Include="src\SudokuSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\PopUpWindow.h" />
     <ClInclude Include="src\Button.h" />
     <ClInclude Include="src\LevelsManager.h" />
     <ClInclude Include="src\Cell.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\SudokuBoard.h" />
+    <ClInclude Include="src\SudokuSolver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

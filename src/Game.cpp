@@ -261,8 +261,15 @@ void Game::processEvents() {
 	//Process events for game
 	if (gameRunning == true) {
 		while (SDL_PollEvent(&e) > 0) {
-			if (e.type == SDL_QUIT) {
-				quit = true;
+			if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE) {
+				//Check close for which window
+				if (SDL_GetWindowID(gWindow) == e.window.windowID) {
+					quit = true;
+					gMessageWindow.close();
+				}
+				else if (SDL_GetWindowID(gMessageWindow.getWindow()) == e.window.windowID) {
+					gMessageWindow.close();
+				}
 			}
 			else if (e.type == SDL_MOUSEBUTTONDOWN) {
 				int x, y;
@@ -313,10 +320,63 @@ void Game::processEvents() {
 
 					if (checkBoardButton.isClicked(x, y)) {
 						if (sudokuBoard.checkBoard() == true) {
+							gMessageWindow.setWindowTitle("Board is correct");
+							gMessageWindow.setMessage("Board is correct");
+							//Create pop up window ????
+							if (gMessageWindow.getWindow() == NULL && gMessageWindow.getRenderer() == NULL) {
+								if (gMessageWindow.init() == false) {
+									printf("Failed to initialize error window\n");
+								}
+								else {
+									SDL_RaiseWindow(gMessageWindow.getWindow());
+								}
+							}
 							printf("Board is correct\n");
 						}
 						else {
+							gMessageWindow.setWindowTitle("Board is incorrect");
+							gMessageWindow.setMessage("Board is incorrect");
+							//Create pop up window ????
+							if (gMessageWindow.getWindow() == NULL && gMessageWindow.getRenderer() == NULL) {
+								if (gMessageWindow.init() == false) {
+									printf("Failed to initialize error window\n");
+								}
+								else {
+									SDL_RaiseWindow(gMessageWindow.getWindow());
+								}
+							}
 							printf("Board is incorrect\n");
+						}
+					}
+
+					if (solveBoardButton.isClicked(x, y)) {
+						if (sudokuBoard.solveBoard() == true) {
+							gMessageWindow.setWindowTitle("Board is solved");
+							gMessageWindow.setMessage("Board is solved");
+							//Create pop up window ????
+							if (gMessageWindow.getWindow() == NULL && gMessageWindow.getRenderer() == NULL) {
+								if (gMessageWindow.init() == false) {
+									printf("Failed to initialize error window\n");
+								}
+								else {
+									SDL_RaiseWindow(gMessageWindow.getWindow());
+								}
+							}
+							printf("Board is solved\n");
+						}
+						else {
+							gMessageWindow.setWindowTitle("Board is unsolvable");
+							gMessageWindow.setMessage("Board is unsolvable");
+							//Create pop up window ????
+							if (gMessageWindow.getWindow() == NULL && gMessageWindow.getRenderer() == NULL) {
+								if (gMessageWindow.init() == false) {
+									printf("Failed to initialize error window\n");
+								}
+								else {
+									SDL_RaiseWindow(gMessageWindow.getWindow());
+								}
+							}
+							printf("Board is unsolvable\n");
 						}
 					}
 				}
@@ -634,6 +694,10 @@ void Game::makeButton() {
 	//Make the check button
 	checkBoardButton.setButton(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 175,
 							100, 50, buttonColor, "Check", gRenderer, 18);
+	
+	//Make the sovle button
+	solveBoardButton.setButton(sudokuBoard.getCellSize() * 9 + ((SCREEN_WIDTH - sudokuBoard.getCellSize() * 9) / 2) - 100 / 2, 250,
+									100, 50, buttonColor, "Solve", gRenderer, 18);
 }
 
 void Game::close() {
@@ -739,7 +803,11 @@ void Game::render() {
 
 	if (main_menu == true) {
 		startButton.renderButton(gRenderer);
-		continueButton.renderButton(gRenderer);
+
+		if (continueButton.getClickAble() == true) {
+			continueButton.renderButton(gRenderer);
+		}
+
 		loadButton.renderButton(gRenderer);
 	}
 
@@ -751,6 +819,11 @@ void Game::render() {
 	}
 
 	if (gameRunning == true) {
+		//Render for the other window
+		if (gMessageWindow.getWindow() != NULL) {
+			gMessageWindow.render();
+		}
+
 		//Draw board
 		sudokuBoard.renderBoard(gRenderer);
 
@@ -762,6 +835,9 @@ void Game::render() {
 
 		//Draw check button
 		checkBoardButton.renderButton(gRenderer);
+
+		//Draw solve button
+		solveBoardButton.renderButton(gRenderer);
 	}
 
 	if (saveMenu == true) {

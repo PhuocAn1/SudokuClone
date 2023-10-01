@@ -225,3 +225,8 @@ bool SudokuBoard::checkBoard() {
 void SudokuBoard::saveLevel(std::string gFileName) {
 	levelsManager.saveLevel(gCells, gFileName);
 }
+
+bool SudokuBoard::solveBoard() {
+	gSolver.reset(gCells);
+	return gSolver.solveBoard(gCells);
+}
