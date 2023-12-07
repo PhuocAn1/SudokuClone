@@ -35,6 +35,7 @@ private:
 	const int SCREEN_HEIGHT = 480;
 	const int textInputWidth = 300;
 	const int textInputHeight = 30;
+
 	size_t gChosenLine = -1;
 	bool quit = false, main_menu = true, gameRunning = false, 
 		difficultyMenu = false, saveMenu = false, loadMenu = false, fromMainMenu = false, fromGameRunning = false;

@@ -71,7 +71,7 @@ bool SudokuSolver::solveBoard(Cell gCell[9][9]) {
 						}
 					}
 				}
-				return false;
+				return false; //Mean that we tried all numbers for this cell and none of them worked, the board is not solvable
 			}
 		}
 	}

@@ -5,6 +5,7 @@
 
 class PopUpWindow
 {
+//I didnt khnow SDL have simple pop up message, so i made my own :(((
 public:
 	PopUpWindow();
 	~PopUpWindow();

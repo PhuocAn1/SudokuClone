@@ -71,6 +71,16 @@ void SudokuBoard::renderBoard(SDL_Renderer *gRenderer) {
 			}
 		}
 	}
+	//Color the editable cells
+	SDL_SetRenderDrawColor(gRenderer, 100, 255, 200, 255);
+	for (int row = 0; row < 9; row++) {
+		for (int col = 0; col < 9; col++) {
+			if (gCells[row][col].isEditable()) {
+				SDL_Rect renderQuad = { col * CELL_SIZE + 1, row * CELL_SIZE + 1, CELL_SIZE - 1, CELL_SIZE - 1 }; //X and Y are switched because of the way the X and Y axis are represented differently in computer graphics
+				SDL_RenderFillRect(gRenderer, &renderQuad);
+			}
+		}
+	}
 
 	//Color the chosen cell
 
@@ -111,7 +121,7 @@ void SudokuBoard::loadLevel() {
 	levelsManager.loadLevel(gCells);
 
 	for (int i = 0; i < 9; i++) {
-		for (int j=0; j<9; j++) {
+		for (int j = 0; j < 9; j++) {
 			if (gCells[i][j].getCellValue() != 0) {
 				gCells[i][j].setEditable(false);
 				gCells[i][j].setCellPosition(i * CELL_SIZE, j * CELL_SIZE);

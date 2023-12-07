@@ -500,7 +500,9 @@ void Game::processEvents() {
 				quit = true;
 			}
 			else if (e.type == SDL_TEXTINPUT) { //Get text input, must be done before SDL_KEYDOWN ???
-				gTextInputBuffer += e.text.text;
+				if (gTextInputBuffer.length() < 20) {
+					gTextInputBuffer += e.text.text;
+				}
 			}
 			else if (e.type == SDL_KEYDOWN) {
 				if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputBuffer.length() > 0) {
@@ -530,8 +532,17 @@ void Game::processEvents() {
 				int x, y;
 				SDL_GetMouseState(&x, &y);
 				if (saveButton.isClicked(x, y)) {
-					printf("Do save file stuff\n");
-					sudokuBoard.saveLevel(gTextInputBuffer);
+					//Check if file name is null
+					if (gTextInputBuffer.length() == 0) {
+						SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "File name cannot be empty", NULL);
+						break;
+					} else {
+						printf("Do save file stuff\n");
+						sudokuBoard.saveLevel(gTextInputBuffer);
+
+						//Pop up message
+						SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Saved", "Level saved successfully", NULL);
+					}	
 				}
 				else if (backButton.isClicked(x, y)) {
 					saveMenu = false;
@@ -853,6 +864,12 @@ void Game::renderTextInput() {
 	textRect.w = textSurface->w;
 	textRect.h = textSurface->h;
 
+	//Add a cursor to the text input
+	if (SDL_GetTicks() % 1000 < 500) {
+		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 1);
+		SDL_RenderDrawLine(gRenderer, textRect.x + textRect.w, textRect.y, textRect.x + textRect.w, textRect.y + textRect.h);
+	}
+
 	SDL_RenderCopy(gRenderer, textTexture, NULL, &textRect);
 
 	//Destroy old surface and texture
@@ -930,7 +947,7 @@ void Game::render() {
 
 		if (fileNames.size() != 0) {
 			renderFileName();
-		}
+		}	
 
 		//Render the button
 		loadButton.renderButton(gRenderer);
